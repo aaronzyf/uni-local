@@ -1,62 +1,37 @@
 import './App.css'
-import {Button} from "@heroui/react";
-import {Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure} from "@heroui/modal";
+
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import AuthLayout from "./components/layout/auth.tsx";
+import LoginPage from "./pages/auth/login.tsx";
+import BlankLayout from "./components/layout/blank.tsx";
+import {HelmetProvider} from 'react-helmet-async';
 
 function App() {
-    let isOpen: boolean;
-    let onOpen: () => void;
-    let onOpenChange: () => void;
-    ({isOpen, onOpen, onOpenChange} = useDisclosure());
 
     return (
-        <>
-            <h1 className="text-3xl font-bold underline">
-                Hello world!
-            </h1>
-            <Button onPress={onOpen}>Open Modal</Button>
-            <Modal
-                isDismissable={false}
-                isKeyboardDismissDisabled={true}
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
-                            <ModalBody>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non
-                                    risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor
-                                    quam.
-                                </p>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non
-                                    risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor
-                                    quam.
-                                </p>
-                                <p>
-                                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit dolor
-                                    adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. Velit duis sit
-                                    officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                                    nisi consectetur esse laborum eiusmod pariatur proident Lorem eiusmod et. Culpa
-                                    deserunt nostrud ad veniam.
-                                </p>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
-                                    Close
-                                </Button>
-                                <Button color="primary" onPress={onClose}>
-                                    Action
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
-    );
+        <HelmetProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path={"/"} element={<BlankLayout/>}>
+                        {/* 登录页使用 AuthLayout */}
+                        <Route element={<AuthLayout/>}>
+                            <Route path="/login" element={<LoginPage/>}/>
+                        </Route>
+
+                        {/*/!* 登录后的页面使用 MainLayout *!/*/}
+                        {/*<Route element={<MainLayout />}>*/}
+                        {/*    <Route path="/" element={<Navigate to="/dashboard" replace />} />*/}
+                        {/*    <Route path="/dashboard" element={<Dashboard />} />*/}
+                        {/*    <Route path="/settings" element={<Settings />} />*/}
+                        {/*</Route>*/}
+
+                        {/*/!* 未匹配到的页面 *!/*/}
+                        {/*<Route path="*" element={<Navigate to="/login" replace />} />*/}
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </HelmetProvider>
+    )
 }
 
 export default App
